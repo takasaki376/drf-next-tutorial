@@ -18,7 +18,7 @@ class BlogSerializer(serializers.ModelSerializer):
     # 登録日時のフォーマット指定と、read_only=Trueをつける事でGETメソッド
     # ではレスポンスを返すがPOST、PUTなど更新時は受け取らない。
     created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
-    updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M", read_only=True)
+    updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
 
     class Meta:
         model = Blog

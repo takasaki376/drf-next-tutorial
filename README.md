@@ -2,8 +2,9 @@
 バージョン 3.8  
 
 # ライブラリインストール (仮想環境)
-pip install Django   
-pip install djangorestframework   
+pip install Django==3.1.7   
+pip install djangorestframework==3.12.2   
+django-cors-headers==3.7.0  
 
 # 設定から仮想環境を選択する
 
@@ -19,13 +20,32 @@ http://127.0.0.1:8000/ にアクセスしてDjangoのデフォルト画面が起
 
 # setting.py の編集
 INSTALLED_APPS に追加  
-　　'rest_framework',  
-　　'api.apps.ApiConfig',  
+```
+    'rest_framework',  
+    'api.apps.ApiConfig',  
+    'corsheaders',
+```
+MIDDLEWARE に追加
+```
+    'corsheaders.middleware.CorsMiddleware',  
+```
+
+動作するサーバ設定
+```
+ALLOWED_HOSTS = ['127.0.0.1']
+```
+
+行追加
+```
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
+```
+
 ###今回やっていないけど、サーバデプロイするならやること  
 　次の値を環境変数にもたせる  
 　SECRET_KEY：githubに公開しないため  
 　DEBUG：ローカルとサーバで設定値を変更するため  
-　ALLOWED_HOSTS：ローカルとサーバで設定値を変更するため  
+　ALLOWED_HOSTS：ローカルとサーバで設定値を変更するため
+　CORS_ORIGIN_WHITELIST：ローカルとサーバで設定値を変更するため
 　DATABASES：ローカルとサーバで設定値を変更するため  
 
 # api/models.py の編集
