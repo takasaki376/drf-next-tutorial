@@ -4,7 +4,7 @@
 # ライブラリインストール (仮想環境)
 pip install Django==3.1.7   
 pip install djangorestframework==3.12.2   
-django-cors-headers==3.7.0  
+pip install django-cors-headers==3.7.0  
 
 # 設定から仮想環境を選択する
 
@@ -19,6 +19,11 @@ manage.py を右クリック　→　実行
 http://127.0.0.1:8000/ にアクセスしてDjangoのデフォルト画面が起動する  
 
 # setting.py の編集
+動作するサーバ設定
+```
+ALLOWED_HOSTS = ['127.0.0.1']
+```
+
 INSTALLED_APPS に追加  
 ```
     'rest_framework',  
@@ -30,12 +35,8 @@ MIDDLEWARE に追加
     'corsheaders.middleware.CorsMiddleware',  
 ```
 
-動作するサーバ設定
-```
-ALLOWED_HOSTS = ['127.0.0.1']
-```
-
-行追加
+フロントエンドのURLを定義する行を追加
+ここで設定されたURLからのみアクセス可能になり、他のURLの場合はエラーになる。
 ```
 CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 ```
@@ -50,17 +51,22 @@ CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 
 # api/models.py の編集
 必要なテーブルのmodelを作成する。
+テーブルを参照する時の定義であり、マイグレーションにて
 
 # api/admin.py の編集　（Django administrationに表示される）
 models.py に定義したモデルを追加する。  
 Django administrationに表示させたくない場合は不要  
 
 # マイグレーション (ターミナルから実行)（macは python3 かも）
+```
 python manage.py makemigrations  
 python manage.py migrate
+```
 
 # スーパーユーザ作成 (ターミナルから実行)
+```
 python manage.py createsuperuser
+```
 
 Username (leave blank to use 'os loginuser'): [ユーザ名を入力する]  
 Email address:  [空白のままEnterキー]  
