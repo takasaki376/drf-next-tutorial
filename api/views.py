@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from .serializers import BlogSerializer
 from .models import Blog
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics ,permissions
+from .custompermissions import OwnerPermission
 
 # ==================================================
 # viewsの役割
@@ -27,6 +28,10 @@ from rest_framework import viewsets, generics
 class BlogViewSet(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+    permission_classes = (OwnerPermission,)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 # querysetで指定したModelの全件抽出処理を行う。
 # ModelViewSetでも可能である。

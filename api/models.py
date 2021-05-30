@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Blog(models.Model):
     # 件名
@@ -10,3 +10,8 @@ class Blog(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # 更新日時
     updated_at = models.DateTimeField(auto_now=True)
+    # 登録ユーザ
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )

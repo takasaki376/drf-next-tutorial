@@ -23,3 +23,4 @@ class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
         fields = ('id', 'title', 'content', 'created_at', 'updated_at')
+        extra_kwargs = {'owner': {'read_only': True}}
