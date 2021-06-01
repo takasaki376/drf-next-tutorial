@@ -28,6 +28,7 @@ from .custompermissions import OwnerPermission
 class BlogViewSet(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+    # 検索は誰でもOK、登録、更新、削除は認証エラー
     permission_classes = (OwnerPermission,)
 
     def perform_create(self, serializer):
@@ -39,4 +40,7 @@ class BlogViewSet(viewsets.ModelViewSet):
 class BlogListView(generics.ListAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+    # 認証チェックをしない
+    permission_classes = (permissions.AllowAny,)
+
 

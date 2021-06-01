@@ -47,8 +47,8 @@ CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 　次の値を環境変数にもたせる  
 　SECRET_KEY：githubに公開しないため  
 　DEBUG：ローカルとサーバで設定値を変更するため  
-　ALLOWED_HOSTS：ローカルとサーバで設定値を変更するため
-　CORS_ORIGIN_WHITELIST：ローカルとサーバで設定値を変更するため
+　ALLOWED_HOSTS：ローカルとサーバで設定値を変更するため  
+　CORS_ORIGIN_WHITELIST：ローカルとサーバで設定値を変更するため  
 　DATABASES：ローカルとサーバで設定値を変更するため  
 
 ## api/models.py の編集
@@ -184,6 +184,8 @@ http://127.0.0.1:8000/auth/jwt/create
 http://127.0.0.1:8000/auth/users/me  
 - トークン更新(djoser)  
 http://127.0.0.1:8000/auth/jwt/refresh  
+http://127.0.0.1:8000/api/blog/  
+　GETメソッド：エラーになること
   
 ※__上記のユーザ作成で、１件はユーザを作成すること__
 
@@ -216,6 +218,11 @@ Type 'exit' to exit this prompt
 - apiフォルダにcustompermissions.pyの新規ファイル作成
 
 ## views.py の修正
+import 文追加
+```
+from .custompermissions import OwnerPermission
+```
+
 - BlogViewSetに対して、個別設定した権限を設定する
 - 登録時にログインユーザを設定する
 ※下記の * 印の行を追加する
@@ -228,6 +235,34 @@ class BlogViewSet(viewsets.ModelViewSet):
 *   def perform_create(self, serializer):
 *       serializer.save(owner=self.request.user)
 ```
+
 ## serializers.py
 - 登録ユーザを表示項目に追加する
 ※下記の * 印の行を追加する
+
+```
+class BlogSerializer(serializers.ModelSerializer):
+    # 登録日時のフォーマット指定と、read_only=Trueをつける事でGETメソッド
+    # ではレスポンスを返すがPOST、PUTなど更新時は受け取らない。
+    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+*   username = serializers.ReadOnlyField(source='owner.username' ,read_only=True)
+
+    class Meta:
+        model = Blog
+        fields = ('id', 'title', 'content', 'created_at', 'updated_at'
+*                 , 'owner', 'username'
+        )
+        extra_kwargs = {'owner': {'read_only': True}}
+```
+
+## 動作確認
+
+http://127.0.0.1:8000/api/blog/    
+　GETメソッド：データが取得できること  
+　POSTメソッド：エラーになること  
+- トークン作成(djoser)    
+http://127.0.0.1:8000/auth/jwt/create  
+http://127.0.0.1:8000/api/blog/      
+　POSTメソッド：登録できる
+こと  

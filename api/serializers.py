@@ -19,8 +19,10 @@ class BlogSerializer(serializers.ModelSerializer):
     # ではレスポンスを返すがPOST、PUTなど更新時は受け取らない。
     created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    username = serializers.ReadOnlyField(source='owner.username' ,read_only=True)
 
     class Meta:
         model = Blog
-        fields = ('id', 'title', 'content', 'created_at', 'updated_at')
+        fields = ('id', 'title', 'content', 'created_at', 'updated_at',
+                  'owner', 'username')
         extra_kwargs = {'owner': {'read_only': True}}
