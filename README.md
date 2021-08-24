@@ -216,6 +216,20 @@ Type 'exit' to exit this prompt
 
 ## アクセス権の個別設定用ファイル作成
 - apiフォルダにcustompermissions.pyの新規ファイル作成
+```
+from rest_framework import permissions
+
+class OwnerPermission(permissions.BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+
+        # GETメソッドの場合は無条件の許可する
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        #  GETメソッド以外は、 owner とログインユーザが一致する場合のみ許可する
+        return obj.owner.id == request.user.id
+```
+
 
 ## views.py の修正
 import 文追加
@@ -226,6 +240,11 @@ from .custompermissions import OwnerPermission
 - BlogViewSetに対して、個別設定した権限を設定する
 - 登録時にログインユーザを設定する
 ※下記の * 印の行を追加する
+  
+```
+from .custompermissions import OwnerPermission
+```  
+
 ```
 class BlogViewSet(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
