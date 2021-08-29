@@ -190,7 +190,10 @@ http://127.0.0.1:8000/api/blog/
 ※__上記のユーザ作成で、１件はユーザを作成すること__
 
 ## models.py修正
-
+import 文追加
+```
+from django.contrib.auth.models import User
+```
 ```
     # 登録ユーザ
     owner = models.ForeignKey(
@@ -241,10 +244,6 @@ from .custompermissions import OwnerPermission
 - 登録時にログインユーザを設定する
 ※下記の * 印の行を追加する
   
-```
-from .custompermissions import OwnerPermission
-```  
-
 ```
 class BlogViewSet(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
