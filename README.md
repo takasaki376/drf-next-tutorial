@@ -99,7 +99,7 @@ api/urls.py
 http://127.0.0.1:8000/api/blog/  
 　GETメソッド：リスト表示されること  
 　POSTメソッド：新規登録されること  
-http://127.0.0.1:8000/api/blog/pk/  
+http://127.0.0.1:8000/api/blog/[pk]/  
   ※pkは各データのidの値  
 　GETメソッド：該当データが１件表示されること  
 　PUTメソッド；更新されること  
@@ -276,11 +276,21 @@ class BlogSerializer(serializers.ModelSerializer):
 
 ## 動作確認
 
+http://127.0.0.1:8000/auth/users
+- ユーザ作成（POSTのみ）  
 http://127.0.0.1:8000/api/blog/    
-　GETメソッド：データが取得できること  
-　POSTメソッド：エラーになること  
-- トークン作成(djoser)    
-http://127.0.0.1:8000/auth/jwt/create  
-http://127.0.0.1:8000/api/blog/      
-　POSTメソッド：登録できる
-こと  
+-　GETメソッド：データが取得できること  
+-　POSTメソッド：エラーになること  
+http://127.0.0.1:8000/auth/jwt/create
+- トークン作成(djoser)  
+http://127.0.0.1:8000/api/blog/  
+-　GETメソッド：リスト表示されること  
+-　POSTメソッド：新規登録されること  
+http://127.0.0.1:8000/api/blog/[pk]/  
+  ※pkは各データのidの値  
+-　GETメソッド：該当データが１件表示されること  
+-　PUTメソッド；更新されること  
+-　PATCHメソッド：指定した項目のみ更新されること  
+-　DELETEメソッド：削除されること  
+http://127.0.0.1:8000/api/bloglist/    
+-　GETメソッド：リスト表示されること  
